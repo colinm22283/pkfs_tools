@@ -14,7 +14,7 @@ all: build/mkfs
 
 .PHONY: clean
 clean:
-	rm -rf build/*
+	rm -rf build
 
 build/mkfs: $(OBJ_DIRS)
 	$(CC) $(LDFLAGS) $(OBJ_DIRS) -o $@

@@ -3,10 +3,10 @@ HEADERS=$(wildcard include/*.h)
 OBJS=main.o page_stack.o write.o parse.o
 OBJ_DIRS=$(foreach OBJ, $(OBJS), build/obj/$(OBJ))
 
-CC=gcc
+CC?=gcc
 CFLAGS=-O2 -c
 
-LD=ld
+LD?=ld
 LDFLAGS=-lc
 
 .PHONY: all

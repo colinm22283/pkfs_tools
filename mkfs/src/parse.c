@@ -1,11 +1,15 @@
 #include <dirent.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <memory.h>
 #include <stdbool.h>
+#include <string.h>
+#include <unistd.h>
 
 #include <parse.h>
 #include <page_stack.h>
+
+#define FILENAME_MAX 128
+#define PATH_MAX     1024
 
 void add_file(const char * file_path, filesystem_page_address_t parent_address) {
     char file_name[FILENAME_MAX];
@@ -64,10 +68,11 @@ void add_file(const char * file_path, filesystem_page_address_t parent_address) 
 
 void recur(const char * directory_path, filesystem_page_address_t parent_address) {
     char directory_buf[PATH_MAX];
-    if (realpath(directory_path, directory_buf) == NULL) {
-        printf("realpath() error\n");
-        exit(1);
-    }
+    strcpy(directory_buf, directory_path);
+    /* if (realpath(directory_path, directory_buf) == NULL) { */
+        /* printf("realpath() error\n"); */
+        /* exit(1); */
+    /* } */
 
     printf("Opening directory: %s\n", directory_buf);
 
@@ -121,10 +126,10 @@ void recur(const char * directory_path, filesystem_page_address_t parent_address
         strcpy(new_path_buf + path_len + 1, entry->d_name);
 
         switch (entry->d_type) {
-            case DT_REG: {
+            case FS_REGULAR: {
                 add_file(new_path_buf, directory_page_address);
             } break;
-            case DT_DIR: {
+            case FS_DIRECTORY: {
                 recur(new_path_buf, directory_page_address);
             } break;
         }
@@ -133,10 +138,11 @@ void recur(const char * directory_path, filesystem_page_address_t parent_address
 
 void parse(const char * input_directory_path) {
     char directory_buf[PATH_MAX];
-    if (realpath(input_directory_path, directory_buf) == NULL) {
-        printf("realpath() error\n");
-        exit(1);
-    }
+    strcpy(directory_buf, input_directory_path);
+    /* if (realpath(input_directory_path, directory_buf) == NULL) { */
+        /* printf("realpath() error\n"); */
+        /* exit(1); */
+    /* } */
 
     printf("Opening directory: %s\n", directory_buf);
 
@@ -185,10 +191,10 @@ void parse(const char * input_directory_path) {
         strcpy(new_path_buf + path_len + 1, entry->d_name);
 
         switch (entry->d_type) {
-            case DT_REG: {
+            case FS_REGULAR: {
                 add_file(new_path_buf, directory_page_address);
             } break;
-            case DT_DIR: {
+            case FS_DIRECTORY: {
                 recur(new_path_buf, directory_page_address);
             } break;
         }

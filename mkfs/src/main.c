@@ -9,7 +9,7 @@
 
 int main(int argc, const char ** argv) {
     if (argc != 3) {
-        puts("Invalid arguments,\nUsage: mkfs <input directory> <output binary>");
+        printf("Invalid arguments,\nUsage: %s <input directory> <output binary>", argv[0]);
         return 1;
     }
 
